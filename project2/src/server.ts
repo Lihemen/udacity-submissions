@@ -30,7 +30,8 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
   // RETURNS
   //   the filtered image file
   app.get("/filteredimage", async (req, res) => {
-    const URL = req.query.image_url;
+    // URL of publically accessible image supplied as a request query.
+    const URL: string = req.query.image_url;
 
     if (!URL) {
       res.status(400).json({
@@ -40,8 +41,10 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
     }
 
     try {
-      const image = await filterImageFromURL(URL);
+      // Path of resized image file
+      const image: string = await filterImageFromURL(URL);
 
+      // ASYNC Timeout to delete file from local file storage
       setTimeout(async () => await deleteLocalFiles([image]), 200);
 
       res.status(200).sendFile(image);
